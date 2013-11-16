@@ -11,6 +11,9 @@ Place the mavproxy_px4.py file in your MAVProxy/modules/ directory.
 Using the Plugin:
 =================
 
+For now, I have not found a way to get mavlink running over USB without first linking the PX4 with QGroundControl.
+This should be sorted out within the next few days.
+
 To use, run MAVProxy with:
 
     python mavproxy.py --master=<your_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --load-module px4
