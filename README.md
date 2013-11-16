@@ -11,14 +11,35 @@ Place the mavproxy_px4.py file in your MAVProxy/modules/ directory.
 Using the Plugin:
 =================
 
-For now, I have not found a way to get mavlink running over USB without first linking the PX4 with QGroundControl.
-This should be sorted out within the next few days.
+If you are using the USB serial port, you will need to start mavlink over USB.
+This can be done by starting MAVProxy in setup mode, which give access to the nsh shell.
+First:
 
-To use, run MAVProxy with:
+    python mavproxy.py --master=<USB_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --setup
+
+Hitting return will show the nsh prompt.
+Once you have the prompt, simply type:
+
+    sh /etc/init.d/rc.usb
+
+to start mavlink on the usb serial connection.
+
+You should see some garbled characters in the terminal - this is fine.
+Just type '.' (without the quotes) and hit return.  This will exit setup mode.
+MAVProxy should now recognize that there is an autopilot present, and allow you to enter commands.
+
+Type:
+
+    load module px4
+
+to initialize the module.
+
+If you are set up with mavlink over a different output (one of the many UARTs on the PX4),
+you can run MAVProxy with:
 
     python mavproxy.py --master=<your_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --load-module px4
-  
-This will provide some extra commands:
+
+After either of these methods, you will now have some extra commands:
 
     px4_arm      -> arms the PX4
     px4_disarm   -> disarms the PX4
