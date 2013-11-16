@@ -4,14 +4,14 @@ mavproxy_px4
 This MAVProxy module adds support for some of the basic functions of the PX4FMU.
 
 Installation:
-=============
+-------------
 
 Place the mavproxy_px4.py file in your MAVProxy/modules/ directory.
 
 Using the Plugin:
-=================
+-----------------
 
-1) Using mavlink over the built-in USB:
+### 1) Using mavlink over the built-in USB:
 
    If you are using the USB serial port, you will need to start mavlink over USB.
    This can be done by starting MAVProxy in setup mode, which give access to the nsh shell.
@@ -36,13 +36,16 @@ Using the Plugin:
 
    to initialize the module.
 
-2) Using mavlink over another serial connection (assumes that your startup scripts already start mavlink):
+### 2) Using mavlink over another serial connection (assumes that your startup scripts already start mavlink):
 
    If you are already set up with mavlink over a different output (one of the many UARTs on the PX4),
    you can run MAVProxy with:
 
     python mavproxy.py --master=<your_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --load-module px4
 
+
+Commands:
+---------
 
 After either of these methods, you will now have some extra commands:
 
