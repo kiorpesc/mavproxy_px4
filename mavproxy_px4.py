@@ -1,6 +1,14 @@
 #!/usr/bin/env python
-'''Additional commands for PX4FMU and IO for MAVProxy'''
+'''
+mavproxy_px4.py
 
+Author: Charles Kiorpes
+Date: November 16th, 2013
+
+Provides additional commands for PX4FMU in MAVProxy
+'''
+
+# Custom mode definitions from PX4 code base
 PX4_CUSTOM_MAIN_MODE_MANUAL   = 1
 PX4_CUSTOM_MAIN_MODE_SEATBELT = 2
 PX4_CUSTOM_MAIN_MODE_EASY     = 3
@@ -13,6 +21,7 @@ PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4
 PX4_CUSTOM_SUB_MODE_AUTO_RTL     = 5
 PX4_CUSTOM_SUB_MODE_AUTO_LAND    = 6
 
+# mavlink base_mode flags
 MAV_MODE_FLAG_DECODE_POSITION_SAFETY      = 0b10000000
 MAV_MODE_FLAG_DECODE_POSITION_MANUAL      = 0b01000000
 MAV_MODE_FLAG_DECODE_POSITION_HIL         = 0b00100000
@@ -22,30 +31,15 @@ MAV_MODE_FLAG_DECODE_POSITION_AUTO        = 0b00000100
 MAV_MODE_FLAG_DECODE_POSITION_TEST        = 0b00000010
 MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE = 0b00000001
 
+# masks to prevent accidental arm/disarm of motors
 DISARM_MASK                               = 0b01111111
 ARMED_MASK                                = 0b10000000
 
-PX4_BASE_DISARMED = 0b01010001 #81
-PX4_BASE_ARMED = 0b11010001 #209
-PX4_AUTO       = 0b00011101 #29
-
-PX4_CUSTOM_SEATBELT = 0b100000000000000000 #131072 -> on the wire, this is transmitted in the following order: 00000000 00000000 00000010
-PX4_CUSTOM_MANUAL   = 0b10000000000000000 #65536
-PX4_CUSTOM_AUTO     = 0b1000000000000000000 #262144
-PX4_CUSTOM_AUTO     = 4  # 00000100 (custom_mode.main_mode)
-
 
 mpstate = None
+# set some default values (will be overwritten by information from the autopilot)
 custom_mode = { 'main_mode' : 1, 'sub_mode' : 0 }
 base_mode = 81
-
-def cmd_px4_init_usb():
-    '''start mavlink over USB'''
-    global mpstate
-    mpstate.mav_master[0].mav.file.write('\r')
-    mpstate.mav_master[0].mav.file.write('\r')
-    mpstate.mav_master[0].mav.file.write('\r')
-    mpstate.mav_master[0].mav.file.write('sh /etc/init.d/rc.usb')
 
 def name():
     '''return module name'''
@@ -63,17 +57,15 @@ def base_mode_value(new_custom_mode):
     '''build the 8-bit base_mode value'''
     global base_mode
     if new_custom_mode == PX4_CUSTOM_MAIN_MODE_AUTO:
-        return (base_mode & ARMED_MASK | MAV_MODE_FLAG_DECODE_POSITION_STABILIZE | MAV_MODE_FLAG_DECODE_POSITION_GUIDED | MAV_MODE_FLAG_DECODE_POSITION_AUTO | MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE) #_0101101
+        return (base_mode & ARMED_MASK | MAV_MODE_FLAG_DECODE_POSITION_STABILIZE | MAV_MODE_FLAG_DECODE_POSITION_GUIDED | MAV_MODE_FLAG_DECODE_POSITION_AUTO | MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE) #_0011101
     else:
         return (base_mode & ARMED_MASK | MAV_MODE_FLAG_DECODE_POSITION_MANUAL | MAV_MODE_FLAG_DECODE_POSITION_STABILIZE | MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE) #_1010001
         
-
 def cmd_px4_arm(args):
     '''arm the PX4 (uses mavlink mode flags)'''
     global mpstate
     global custom_mode
     global base_mode
-    #
     print(custom_mode)                                                                              
     mpstate.master().mav.set_mode_send(mpstate.status.target_system, base_mode | MAV_MODE_FLAG_DECODE_POSITION_SAFETY, custom_mode_value(custom_mode['sub_mode'], custom_mode['main_mode']))
     print("Arming the PX4")
@@ -161,14 +153,31 @@ def init(_mpstate):
     mpstate.command_map['px4_mission'] = (cmd_px4_auto_mission, "set px4 flight mode to auto - mission submode")
     mpstate.command_map['px4_rtl'] = (cmd_px4_auto_rtl, "set px4 flight mode to auto - RTL submode")
     mpstate.command_map['px4_land'] = (cmd_px4_auto_land, "set px4 flight mode to auto - land submode")
-    # mpstate.command_map['px4_init_usb'] = (cmd_px4_init_usb, "start mavlink over the usb serial connection")
     print("PX4 module initialised")
 
 def unload():
-    if 'px4_arm,' in mpstate.command_map:
+    if 'px4_arm' in mpstate.command_map:
         mpstate.command_map.pop('px4_arm')
     if 'px4_disarm' in mpstate.command_map:
         mpstate.command_map.pop('px4_disarm')
+    if 'px4_manual' in mpstate.command_map:
+        mpstate.command_map.pop('px4_manual')
+    if 'px4_seatbelt' in mpstate.command_map:
+        mpstate.command_map.pop('px4_seatbelt')
+    if 'px4_easy' in mpstate.command_map:
+        mpstate.command_map.pop('px4_easy')
+    if 'px4_ready' in mpstate.command_map:
+        mpstate.command_map.pop('px4_ready')
+    if 'px4_takeoff' in mpstate.command_map:
+        mpstate.command_map.pop('px4_takeoff')
+    if 'px4_loiter' in mpstate.command_map:
+        mpstate.command_map.pop('px4_loiter')
+    if 'px4_mission' in mpstate.command_map:
+        mpstate.command_map.pop('px4_mission')
+    if 'px4_rtl' in mpstate.command_map:
+        mpstate.command_map.pop('px4_rtl')
+    if 'px4_land' in mpstate.command_map:
+        mpstate.command_map.pop('px4_land')
 
 def mavlink_packet(m):
     '''handle an incoming mavlink packet'''
