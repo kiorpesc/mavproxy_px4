@@ -53,57 +53,17 @@ After either of these methods, you will now have some extra commands:
     px4_disarm   -> disarms the PX4
     px4_manual   -> sets the flight mode to 'MANUAL'
     px4_seatbelt -> sets the flight mode to 'SEATBELT'
-    px4_auto     -> sets the flight mode to 'AUTO' (currently untested)
+    px4_easy     -> sets the flight mode to 'EASY'
+    px4_ready    -> sets the flight mode to 'AUTO', submode 'READY'
+    px4_takeoff  -> tells PX4 to take off in AUTO mode
+    px4_loiter   -> tells PX4 to loiter in AUTO mode (untested)
+    px4_mission  -> tells PX4 to fly mission in AUTO mode (untested)
+    px4_rtl      -> sends return to launch command (untested)
+    px4_land     -> tells PX4 to land in AUTO mode (untested)
 
 More functions will be available in later versions.
 
-MAVProxy will not display the flight modes correctly, because the PX4 is using custom modes that are not
-currently in the git master mavlink common or dialect definitions.
+MAVProxy will not display the flight modes correctly, because the PX4 is using custom modes.  
 
-If you want to be able to see the current flight mode, you have to make a modification to a file in
-the mavlink directory.
-
-Edit mavlink/pymavlink/mavutil.py
-
-Where you see: 
-
-
-    mode_mapping_acm = {
-        0 : 'STABILIZE',
-        1 : 'ACRO',
-        2 : 'ALT_HOLD',
-        3 : 'AUTO',
-        4 : 'GUIDED',
-        5 : 'LOITER',
-        6 : 'RTL',
-        7 : 'CIRCLE',
-        8 : 'POSITION',
-        9 : 'LAND',
-        10 : 'OF_LOITER',
-        11 : 'APPROACH'
-    }
-
-add a few lines at the bottom of the map, so that it looks like:
-    
-    mode_mapping_acm = {
-        0 : 'STABILIZE',
-        1 : 'ACRO',
-        2 : 'ALT_HOLD',
-        3 : 'AUTO',
-        4 : 'GUIDED',
-        5 : 'LOITER',
-        6 : 'RTL',
-        7 : 'CIRCLE',
-        8 : 'POSITION',
-        9 : 'LAND',
-        10 : 'OF_LOITER',
-        11 : 'APPROACH',
-        65536 : 'PX4_MANUAL',
-        131072 : 'PX4_SEATBELT',
-        262144 : 'PX4_AUTO'
-    }
-  
-This modification will allow you to see the current flight mode.   
-  
 
   
