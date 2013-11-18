@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSockets Demonstrator For LFY</title>
+    </head>
+    <body style="font-family: Lekton; font-size: 24pt">
+        <p style="width: 800px">Powered By WebSockets. Use the form below to chat with the server.</p>
+        <div id="chatbox" style="font-size: 14pt; height: 500px; width: 800px; overflow: scroll; border: 1px solid black"></div>
+        <form id="conversation" onsubmit="DispatchText()" action="javascript:void(0);">
+            <input type="text" id="message" name="message" autocomplete="off" style="width:700px" />
+            <input type="submit" id="sub" name="sub" value="Send" style="width:90px" />
+        </form>
+        <script type="text/javascript">
+            var ws = new WebSocket("ws://localhost:8888/websocket");
+            ws.onmessage = function(evt){
+                x = document.createElement("p");
+                x.innerHTML = evt.data;
+                document.getElementById("chatbox").appendChild(x);
+            }
+ 
+            function DispatchText(){
+                //first, get message from input field
+                var userInput = document.getElementById("message").value;
+                //then, clear input field
+                document.getElementById("message").value = "";
+                //now, create a paragraph element
+                x = document.createElement("p");
+                //set the p text to the input 
+                x.innerHTML = "You sent: " + userInput;
+                //stick the input into the chat box
+                document.getElementById("chatbox").appendChild(x);
+                //send user input to server for processing
+                ws.send(userInput);
+            }
+        </script>
+    </body>
+</html>
