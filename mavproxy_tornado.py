@@ -1,5 +1,6 @@
 #!/usr/bin/python
- 
+
+import threading 
 import tornado.web
 import tornado.websocket
 import tornado.ioloop
@@ -17,7 +18,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def open(self):
         global mpstate
         while True:
-            self.write_message(mpstate.status.last_heartbeat)
+            self.write_message(str(mpstate.status.last_heartbeat))
             time.sleep(1)
 
 application = tornado.web.Application([
@@ -25,15 +26,20 @@ application = tornado.web.Application([
     (r"/websocket", WebSocketHandler),
 ])
 
-
-def init(_mpstate):
-    '''initialise module'''
+def server_thread(port, _mpstate):
+    # initialise module
     global mpstate
     global application
     mpstate = _mpstate
     print("Test server initialized.")
-    application.listen(8888)
-    tornado.ioLoop.IOLoop.instance().start()
+    # application stuff here?
+    application.listen(port)
+    tornado.ioloop.IOLoop.instance().start()
+
+def start_server(port, _mpstate):
+    server = threading.Thread(target=server_thread, args=(port, _mpstate))
+    server.daemon = True
+    server.start()
 
 if __name__ == "__main__":
     application.listen(8888)

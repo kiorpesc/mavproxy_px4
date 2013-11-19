@@ -8,6 +8,8 @@ Date: November 16th, 2013
 Provides additional commands for PX4FMU in MAVProxy
 '''
 
+import mavproxy_tornado # for now
+
 # Custom mode definitions from PX4 code base
 PX4_CUSTOM_MAIN_MODE_MANUAL   = 1
 PX4_CUSTOM_MAIN_MODE_SEATBELT = 2
@@ -138,6 +140,13 @@ def cmd_px4_auto_land(args):
     mpstate.master().mav.set_mode_send(mpstate.status.target_system, base_mode_value(PX4_CUSTOM_MAIN_MODE_AUTO), custom_mode_value(PX4_CUSTOM_SUB_MODE_AUTO_LAND, PX4_CUSTOM_MAIN_MODE_AUTO))
     print("PX4 LANDING in AUTO mode.")
 
+def cmd_start_server(args):
+    if len(args) > 0:
+        port = args[0]
+    else:
+        port = 8888
+    mavproxy_tornado.start_server(port, mpstate)
+
 def init(_mpstate):
     '''initialise module'''
     global mpstate
@@ -153,6 +162,7 @@ def init(_mpstate):
     mpstate.command_map['px4_mission'] = (cmd_px4_auto_mission, "set px4 flight mode to auto - mission submode")
     mpstate.command_map['px4_rtl'] = (cmd_px4_auto_rtl, "set px4 flight mode to auto - RTL submode")
     mpstate.command_map['px4_land'] = (cmd_px4_auto_land, "set px4 flight mode to auto - land submode")
+    mpstate.command_map['px4_start_server'] = (cmd_start_server, "test tornado server")
     print("PX4 module initialised")
 
 def unload():
