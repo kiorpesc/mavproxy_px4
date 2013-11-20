@@ -1,0 +1,260 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link type="text/css" href="{{ static_url("bootstrap.min.css") }}" rel="stylesheet">
+<link type="text/css" href="{{ static_url("car.css") }}" rel="stylesheet">
+<script language="javascript" type="text/javascript" src="{{ static_url("script/archetype.js") }}"></script>
+<title>Untitled Document</title>
+</head>
+
+<body>
+<div class="container">
+
+      <div class="masthead">
+        <h1 class="centerer"><img src="{{ static_url("img/logo.png") }}"></h1>
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="#">Jumbotron</a></li>
+                <li><a href="#">Course Control</a></li>
+                <li class="active"><a href="#">Mission Overview</a></li>
+                <li><a href="#">Condition Monitor</a></li>
+                <li><a href="#">Command Console</a></li>
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.navbar -->
+      </div>
+
+      <!-- Jumbotron -->
+      <div class="jumbotron">
+      <div class="row well well-small border-hang">
+      	<div class="span2 ">
+        	<h4>flight status</h4>
+            <p class="badge badge-success">armed, airborne</p>
+        </div>
+        <div class="span2 ">
+        	<h4>route status</h4>
+            <p class="badge badge-success">enroute, auto</p>
+        </div>
+        <div class="span3 ">
+        	<h4>mission status</h4>
+            <p class="badge badge-success">green, current, no error</p>
+        </div>
+        <div class="span2">
+        	<h4>craft status</h4>
+            <p class="badge badge-success">active, locked</p>
+        </div>
+                <div class="span2">
+        	<h4>signal status</h4>
+            <p class="badge badge-success">secured, connected</p>
+        </div>
+        
+      </div>
+      <div class="row margin-left-null">
+      	<img src="http://placehold.it/1000x500">
+      </div>
+        <div class="row">
+        
+        <div class="span5">
+        	<h4 class="lefter exo">Craft Readings</h4>
+            <table class="table table-striped">
+            <thead>
+            	<tr>
+                	<td>Paramater</td>
+                    <td>Value</td>
+                </tr>
+            </thead>
+            
+            <tbody>
+            	<tr class="text-success">
+                	<td>GPS Reading (Fix Type)</td>
+                    <td id="GPS_RAW_INTfix_type">Valid</td>
+                </tr>
+            	<tr>
+                	<td>Latitude</td>
+                    <td id="lat">{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Longitude</td>
+                    <td id="lon">{VAL}</td>
+                </tr><tr>
+                	<td>Yaw</td>
+                    <td id="heading">{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Pitch</td>
+                    <td id="pitch">{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Roll</td>
+                    <td id="roll">{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Altitude</td>
+                    <td id="alt">{VAL}</td>
+                </tr>
+                <tr>
+                	<td>GPS Timestamp</td>
+                    <td id="time_sec">{TIMESTAMP}</td>
+                </tr>
+            </tbody>
+         </table>
+        </div>
+        
+                <div class="span6 pull-right">
+        	<h4 class="lefter exo pull-right">Route Monitor</h4>
+            <table class="table table-striped">
+            <thead>
+            	<tr>
+                	<td>Paramater</td>
+                    <td>Value</td>
+                </tr>
+            </thead>
+            
+            <tbody>
+            	<tr class="text-success">
+                	<td>Routing</td>
+                    <td>Recieved, enroute</td>
+                </tr>
+            	<tr>
+                	<td>Last Direction</td>
+                    <td>{VAL}</td>
+                </tr>
+                <tr class="text-info">
+                	<td>Current Direction</td>
+                    <td>{VAL}</td>
+                </tr><tr class="text-warning">
+                	<td>Current Step</td>
+                    <td>{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Next Step</td>
+                    <td>{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Next Direction</td>
+                    <td>{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Speed</td>
+                    <td>{VAL}</td>
+                </tr>
+                <tr>
+                	<td>Control Method</td>
+                    <td>{TIMESTAMP}</td>
+                </tr>
+            </tbody>
+         </table>
+        </div>
+        
+        
+        </div>
+        <div class="row">
+        
+        <div class="span5">
+        	<h4 class="lefter exo">Connection Monitor</h4>
+            <table class="table table-striped">
+            <thead>
+            	<tr>
+                	<td>Paramater</td>
+                    <td>Value</td>
+                </tr>
+            </thead>
+            
+            <tbody>
+            	<tr>
+                	<td>AP Connection</td>
+                    <td>Connected</td>
+                </tr>
+            	<tr>
+                	<td>Craft Connection</td>
+                    <td>Connected</td>
+                </tr>
+                <tr>
+                	<td>Database Connection</td>
+                    <td>Connected</td>
+                </tr><tr>
+                	<td>Polaris Connection</td>
+                    <td>Connected</td>
+                </tr>
+            </tbody>
+         </table>
+        </div>
+        
+                <div class="span6 pull-right">
+        	<h4 class="lefter exo pull-right">Socket Connection Monitor</h4>
+            <table class="table table-striped">
+            <thead>
+            	<tr>
+                	<td>Paramater</td>
+                    <td>Value</td>
+                </tr>
+            </thead>
+            
+            <tbody>
+            	<tr>
+                	<td>Tunnel A (CCS, 8888)</td>
+                    <td>Connected, Secured</td>
+                </tr>
+            	<tr>
+                	<td>Tunnel B (FMS, 8889)</td>
+                    <td>Connected, Secured</td>
+                </tr>
+                <tr>
+                	<td>Tunnel C (GPS, 8887)</td>
+                    <td>Connected, Secured</td>
+                </tr><tr>
+                	<td>Concurrent Control Socket</td>
+                    <td>No Signal Lock</td>
+                </tr>
+                <tr>
+                	<td>Flight Monitoring Socket</td>
+                    <td>Lock Established</td>
+                </tr>
+                <tr>
+                	<td>Global Positioning Socket</td>
+                    <td>Awaiting Lock...</td>
+                </tr>
+            </tbody>
+         </table>
+        </div>
+        
+        
+        </div>
+        
+      </div>
+
+      <hr>
+
+      <!-- Example row of columns -->
+      <div class="row-fluid">
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="footer">
+        <p>&copy; Exabase 2013</p>
+      </div>
+<script src="http://we.have.style.at.exabase.org/js/jquery-1.6.1.min.js"></script>
+<script src="http://we.have.style.at.exabase.org/js/bootstrap.min.js"></script>
+</body>
+</html>
+

@@ -141,11 +141,15 @@ def cmd_px4_auto_land(args):
     print("PX4 LANDING in AUTO mode.")
 
 def cmd_start_server(args):
+    global mpstate
     if len(args) > 0:
         port = args[0]
     else:
         port = 8888
-    mavproxy_tornado.start_server(port, mpstate)
+    # initialize server state tracking class
+    mpstate.server_state = mavproxy_tornado.ServerState(port)
+    # start server
+    mavproxy_tornado.start_server(mpstate.server_state)
 
 def init(_mpstate):
     '''initialise module'''
@@ -193,11 +197,18 @@ def mavlink_packet(m):
     '''handle an incoming mavlink packet'''
     global custom_mode
     global base_mode
+    global mpstate
     if m.get_type() == 'HEARTBEAT':
         if custom_mode != m.custom_mode :
             custom_mode['sub_mode'] = m.custom_mode >> 24
             custom_mode['main_mode'] = (m.custom_mode >> 16) & 255
         if base_mode != m.base_mode:
             base_mode = m.base_mode
+    if m.get_type() == 'VFR_HUD':
+        m.groundspeed = -1
+        # just to test heartbeat... move back out of outer if!!!
+    if mpstate.server_state.ws_count > 0:
+        for ws in mpstate.server_state.websockets:
+            ws.send_mavlink(m)
 
 
