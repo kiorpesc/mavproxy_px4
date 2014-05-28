@@ -37,12 +37,6 @@ MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE = 0b00000001
 DISARM_MASK                               = 0b01111111
 ARMED_MASK                                = 0b10000000
 
-
-mpstate = None
-# set some default values (will be overwritten by information from the autopilot)
-custom_mode = { 'main_mode' : 1, 'sub_mode' : 0 }
-base_mode = 81
-
 class PX4Module(mp_module.MPModule):
     def __init__(self, mpstate):
         super(PX4Module, self).__init__(mpstate, "px4", "px4 mode changes", public = True)
