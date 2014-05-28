@@ -7,17 +7,23 @@ Installation:
 -------------
 
 Place the mavproxy_px4.py file in your MAVProxy/modules/ directory.
+If you have installed MAVProxy as a Python module (i.e. via pip), the modules directory will be in your python dist-packages directory.
+For example, on a Ubuntu system, it should be located at:
+
+    /usr/local/lib/python2.7/dist-packages/MAVProxy/modules/
 
 Using the Plugin:
 -----------------
 
 ### 1) Using mavlink over the built-in USB:
 
+   NOTE: The PX4 startup may have changed since these instructions were written, as firmware development is EXTREMELY active.
+
    If you are using the USB serial port, you will need to start mavlink over USB.
    This can be done by starting MAVProxy in setup mode, which give access to the nsh shell.
    First:
 
-    python mavproxy.py --master=<USB_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --setup
+    mavproxy.py --master=<USB_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --setup
 
    Hitting return will show the nsh prompt.
    Once you have the prompt, simply type:
@@ -41,7 +47,7 @@ Using the Plugin:
    If you are already set up with mavlink over a different output (one of the many UARTs on the PX4),
    you can run MAVProxy with:
 
-    python mavproxy.py --master=<your_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --load-module px4
+    mavproxy.py --master=<your_serial_port> --baud=57600 --quadcopter --dialect=pixhawk --load-module px4
 
 
 Commands:
@@ -61,9 +67,7 @@ After either of these methods, you will now have some extra commands:
     px4_rtl      -> sends return to launch command (untested)
     px4_land     -> tells PX4 to land in AUTO mode (untested)
 
-More functions will be available in later versions.
-
-MAVProxy will not display the flight modes correctly, because the PX4 is using custom modes.  
+MAVProxy may not display the flight modes correctly, because the PX4 is using custom modes.  
 
 
   
