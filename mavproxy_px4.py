@@ -12,9 +12,10 @@ from MAVProxy.modules.lib import mp_module
 
 # Custom mode definitions from PX4 code base
 PX4_CUSTOM_MAIN_MODE_MANUAL   = 1
-PX4_CUSTOM_MAIN_MODE_SEATBELT = 2
-PX4_CUSTOM_MAIN_MODE_EASY     = 3
+PX4_CUSTOM_MAIN_MODE_ALTCTL   = 2
+PX4_CUSTOM_MAIN_MODE_POSCTL   = 3
 PX4_CUSTOM_MAIN_MODE_AUTO     = 4
+PX4_CUSTOM_MAIN_MODE_ACRO     = 5
 
 PX4_CUSTOM_SUB_MODE_AUTO_READY   = 1
 PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF = 2
@@ -47,8 +48,8 @@ class PX4Module(mp_module.MPModule):
         self.add_command('px4_arm', self.cmd_px4_arm, "arm the PX4", [])
         self.add_command('px4_disarm', self.cmd_px4_disarm, "disarm the px4", [])
         self.add_command('px4_manual', self.cmd_px4_manual, "set px4 flight mode to manual", [])
-        self.add_command('px4_seatbelt', self.cmd_px4_seatbelt, "set px4 flight mode to seatbelt", [])
-        self.add_command('px4_easy', self.cmd_px4_easy, "set px4 flight mode to easy", [])
+        self.add_command('px4_altctl', self.cmd_px4_altctl, "set px4 flight mode to seatbelt", [])
+        self.add_command('px4_posctl', self.cmd_px4_posctl, "set px4 flight mode to easy", [])
         self.add_command('px4_ready', self.cmd_px4_auto_ready, "set px4 flight mode to auto - ready submode", [])
         self.add_command('px4_takeoff', self.cmd_px4_auto_takeoff, "set px4 flight mode to auto - takeoff", [])
         self.add_command('px4_loiter', self.cmd_px4_auto_loiter, "set px4 flight mode to auto - loiter submode", [])
@@ -83,15 +84,15 @@ class PX4Module(mp_module.MPModule):
         self._mpstate.master().mav.set_mode_send(self._mpstate.status.target_system, self.base_mode_value(PX4_CUSTOM_MAIN_MODE_MANUAL), self.custom_mode_value(0, PX4_CUSTOM_MAIN_MODE_MANUAL))
         print("Switching to MANUAL mode.")
 
-    def cmd_px4_seatbelt(self, args):
-        '''set px4 mode to SEATBELT'''
-        self_mpstate.master().mav.set_mode_send(self._mpstate.status.target_system, self.base_mode_value(PX4_CUSTOM_MAIN_MODE_SEATBELT), self.custom_mode_value(0, PX4_CUSTOM_MAIN_MODE_SEATBELT))
-        print("Switching to SEATBELT mode.")
+    def cmd_px4_altctl(self, args):
+        '''set px4 mode to ALTCTL'''
+        self_mpstate.master().mav.set_mode_send(self._mpstate.status.target_system, self.base_mode_value(PX4_CUSTOM_MAIN_MODE_ALTCTL), self.custom_mode_value(0, PX4_CUSTOM_MAIN_MODE_ALTCTL))
+        print("Switching to ALTCTL mode.")
 
-    def cmd_px4_easy(self, args):
-        '''set px4 mode to EASY'''
-        self._mpstate.master().mav.set_mode_send(self._mpstate.status.target_system, self.base_mode_value(PX4_CUSTOM_MAIN_MODE_EASY), self.custom_mode_value(0, PX4_CUSTOM_MAIN_MODE_EASY))
-        print("Switching to EASY mode.")
+    def cmd_px4_posctl(self, args):
+        '''set px4 mode to POSCTL'''
+        self._mpstate.master().mav.set_mode_send(self._mpstate.status.target_system, self.base_mode_value(PX4_CUSTOM_MAIN_MODE_POSCTL), self.custom_mode_value(0, PX4_CUSTOM_MAIN_MODE_POSCTL))
+        print("Switching to POSCTL mode.")
 
     def cmd_px4_auto_ready(self, args):
         '''set px4 mode to AUTO - READY'''
