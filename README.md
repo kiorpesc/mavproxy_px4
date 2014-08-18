@@ -38,7 +38,7 @@ Using the Plugin:
 
    Once you are out of setup mode, type:
 
-    load module px4
+    module load px4
 
    to initialize the module.
 
